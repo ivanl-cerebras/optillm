@@ -2,14 +2,37 @@ import re
 from typing import Tuple
 from functools import partial
 
+from transformers import AutoTokenizer, PreTrainedTokenizerBase
+
 # Use relative imports that work within the dynamically loaded module
 from .mapreduce import mapreduce
-from .utils import (
+from .config import LongCepoConfig
+from ..common.utils import (
     get_prompt_response,
     logger,
-    longcepo_init,
     loop_until_match,
+    CBLog,
 )
+
+
+def longcepo_init(
+    initial_query: str,
+) -> Tuple[str, str, PreTrainedTokenizerBase, CBLog, LongCepoConfig]:
+    """
+    Initializes context, query, tokenizer, logging, and config from an input string.
+
+    Args:
+        initial_query (str): Input string containing context and query separated by a delimiter string.
+
+    Returns:
+        Tuple[str, str, PreTrainedTokenizerBase, CBLog, LongCepoConfig]:
+        Parsed context, query, tokenizer instance, log object, and LongCePO config.
+    """
+    cb_log = CBLog()
+    config = LongCepoConfig()
+    context, query = initial_query.split(config.context_query_delimiter)
+    tokenizer = AutoTokenizer.from_pretrained(config.tokenizer_name)
+    return context.strip(), query.strip(), tokenizer, cb_log, config
 
 
 def run_longcepo(

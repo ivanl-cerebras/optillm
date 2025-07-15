@@ -2,9 +2,6 @@ import logging
 from typing import Callable, List, Optional, Tuple
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from transformers import AutoTokenizer, PreTrainedTokenizerBase
-from .config import LongCepoConfig
-
 logger = logging.getLogger(__name__)
 
 
@@ -169,23 +166,3 @@ def loop_until_match(
         logger.info("Wrong output formatting, retrying...")
 
     return answer, cb_log
-
-
-def longcepo_init(
-    initial_query: str,
-) -> Tuple[str, str, PreTrainedTokenizerBase, CBLog, LongCepoConfig]:
-    """
-    Initializes context, query, tokenizer, logging, and config from an input string.
-
-    Args:
-        initial_query (str): Input string containing context and query separated by a delimiter string.
-
-    Returns:
-        Tuple[str, str, PreTrainedTokenizerBase, CBLog, LongCepoConfig]:
-        Parsed context, query, tokenizer instance, log object, and LongCePO config.
-    """
-    cb_log = CBLog()
-    config = LongCepoConfig()
-    context, query = initial_query.split(config.context_query_delimiter)
-    tokenizer = AutoTokenizer.from_pretrained(config.tokenizer_name)
-    return context.strip(), query.strip(), tokenizer, cb_log, config

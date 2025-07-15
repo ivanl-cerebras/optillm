@@ -1,18 +1,18 @@
 from functools import partial
 from typing import Tuple, List
 
-from .utils import (
+from ..common.utils import (
     CBLog,
-    LongCepoConfig,
     get_prompt_response,
     concurrent_map,
     logger,
     loop_until_match,
 )
-from .chunking import (
+from ..common.chunking import (
     chunk_context,
     get_prompt_length,
 )
+from .config import LongCepoConfig
 
 format_chunk_list = lambda chunk_list: [
     f"Information of Chunk {index}:\n{doc}\n" for index, doc in enumerate(chunk_list)

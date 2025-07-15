@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from optillm.plugins.longcepo.prompts import (
+from .prompts import (
     MAPREDUCE_SYSTEM_PROMPT,
     QUERY_FORMAT_PROMPT,
     PLANNING_SYSTEM_PROMPT,
